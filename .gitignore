@@ -1,0 +1,31 @@
+# assembler / dos / windows artifacts
+*.obj
+*.exe
+*.com
+*.lst
+*.map
+*.bak
+*.tmp
+*.sbr
+*.pch
+*.pdb
+*.ilk
+*.out
+
+# dosbox configs/logs
+DosBox*.conf
+dosbox*.conf
+dosbox*.log
+
+# editor
+.vscode/
+*.code-workspace
+
+# os
+Thumbs.db
+Desktop.ini
+
+# build dirs
+/build/
+/bin/
+/out/
