@@ -16,7 +16,7 @@ DOS_INT EQU 21H
     BOX_GAP EQU 15         ; Horizontal gap between boxes
 
     ; Initial Box Coordinates
-    START_X DW 105          ; Initial X coordinate for the first box
+    START_X DW 100          ; Initial X coordinate for the first box
     START_Y DW 65          ; Fixed Y coordinate for the top edge
     BOX_COLOR DB 0EH       ; Yellow/High-Intensity
 
@@ -156,7 +156,7 @@ RIGHT_LINE_LOOP:
     
 END_RIGHT_LINE:
 
-    ; --- Update X position for the next box ---
+    ; Update X position for the next box
     ADD SI, BOX_WIDTH          ; SI = SI + 75 (move past the box)
     ADD SI, BOX_GAP            ; SI = SI + 15 (add the gap)
     
@@ -164,7 +164,7 @@ END_RIGHT_LINE:
     DEC BX                     ; Decrement the loop counter
     JNE OUTER_BOX_LOOP         ; Jump if counter (BX) is not zero.
     
-    ; --- Program Exit ---
+    ; Program Exit
     
     ; 3. Wait for a keystroke to keep the image visible
     MOV AH, 00H
