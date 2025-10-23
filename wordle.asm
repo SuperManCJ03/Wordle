@@ -7,6 +7,24 @@ MODE_12 EQU 12H    ; 640x480, 16 colors (VGA)
 BIOS_VIDEO_INT EQU 10H
 DOS_INT EQU 21H
 
+; =======================================================
+; Flow of how the program works
+; 1. Switch from video mode to graphics mode
+; 2. Set the color and page (like setting up where you will paint)
+; 3. Use Outer Box to start the loop of drawing 5 boxes in a row, each iteration creates one box
+; 4. Labels starts here. Top line will be used first to draw the top line
+; 5. Bottom line is executed
+; 6. Left line is executed
+; 7. Right line is executed
+; 8. Checks if there's still no exact 5 boxes, then jumps back to number (3)
+; ^===== After this loop, 5 boxes are drawn in a row
+
+; 9. Else, the cursor goes down a row, and jumps back to number (3) to draw 5 boxes again.
+; ^===== After this loop, it draws another 5 boxes below the previous row
+
+; 10. If there's still no 5 rows of 5 boxes, jumps back to 
+; ^===== After this loop, there would be 5 rows, each with 5 boxes
+
 .DATA
     saveMode DB ?          ; To save the original video mode
 
@@ -163,9 +181,10 @@ END_RIGHT_LINE:
     POP BX                     ; Restore outer loop counter BX
     DEC BX                     ; Decrement the loop counter
     JNE OUTER_BOX_LOOP         ; Jump if counter (BX) is not zero.
+    ; If yes, draw a box again
     
+    ; Else
     ; Program Exit
-    
     ; 3. Wait for a keystroke to keep the image visible
     MOV AH, 00H
     INT 16H            ; Waits for any key press
