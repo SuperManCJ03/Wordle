@@ -3,17 +3,9 @@
 .STACK 64
 
 ; Constants for Video Modes
-MODE_12 EQU 12H    ; 640x480, 16 colors (VGA)
+MODE_12        EQU 12H    ; 640x480, 16 colors (VGA)
 BIOS_VIDEO_INT EQU 10H
-
-.MODEL SMALL
-
-.STACK 64
-
-; Constants for Video Modes
-MODE_12 EQU 12H    ; 640x480, 16 colors (VGA)
-BIOS_VIDEO_INT EQU 10H
-DOS_INT EQU 21H
+DOS_INT        EQU 21H
 
 ; external procedure that draws all boxes
 EXTRN DrawBoxes:NEAR
@@ -26,13 +18,21 @@ EXTRN DrawBoxes:NEAR
 ; -------------------------------------------------------
 
 .DATA
-    saveMode DB ?          ; to save the original video mode
+    saveMode DB ?          ; to save the original video mode (al from int 10h/ah=0fh)
 
 .CODE
 main PROC
-    MOV saveMode, AL   ; Save it in AL
+    ; set data segment
+    MOV AX, @DATA
+    MOV DS, AX
 
-    MOV AH, 00H        ; Set Video Mode
+    ; save current text/graphics mode
+    MOV AH, 0FH                ; get current video mode
+    INT BIOS_VIDEO_INT
+    MOV saveMode, AL           ; save mode number from AL
+
+    ; switch to graphics mode 12h
+    MOV AH, 00H        ; set video mode
     MOV AL, MODE_12
     INT BIOS_VIDEO_INT
 
